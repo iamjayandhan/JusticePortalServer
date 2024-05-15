@@ -42,7 +42,7 @@ const signup = async (req, res) => {
 };
 
 const getBill = (req, res) => {
-    const { userEmail } = req.body;
+    const { userEmail, mailBody, subject } = req.body;
 
     let config = {
         service: 'gmail',
@@ -57,38 +57,35 @@ const getBill = (req, res) => {
     let MailGenerator = new Mailgen({
         theme: "default",
         product: {
-            name: "Mailgen",
-            link: 'https://mailgen.js/'
+            name: "Justice Portal Team",
+            link: 'https://justice-portal.vercel.app/',
         }
     });
 
     let response = {
-        body: {
-            name: "Wolverine Logan",
-            intro: "Your bill has arrived!",
-            table: {
-                data: [
-                    {
-                        item: "Nodemailer Stack Book",
-                        description: "A Backend application",
-                        price: "$10.99",
-                    }
-                ]
-            },
-            outro: "Looking forward to doing more business"
-        }
+        body: mailBody,
     };
+    
 
+    // Check if userEmail is received
+    console.log('User Email:', userEmail);
     let mail = MailGenerator.generate(response);
 
     let message = {
         from: EMAIL,
         to: userEmail,
-        subject: 'Place Order',
+        subject: subject || 'Registration Successful!',
         html: mail
     };
 
     transporter.sendMail(message).then(() => {
+
+        // Set CORS headers in the response
+        res.setHeader('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
+        // Optionally, you can set other CORS headers as needed
+        res.setHeader('Access-Control-Allow-Methods', 'POST');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
         return res.status(201).json({
             msg: "You should receive an email"
         });
