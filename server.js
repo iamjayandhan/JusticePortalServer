@@ -14,7 +14,7 @@ app.use(express.json());
 app.use('/api', appRoute);
 
 // Define OPTIONS route for preflight requests
-app.options('/api/product/getbill', cors()); // Use cors middleware for OPTIONS request
+app.options('*', cors());
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
