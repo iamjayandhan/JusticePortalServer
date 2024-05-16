@@ -1,62 +1,24 @@
 const express = require('express');
 const app = express();
-const router = require('./routes/route.js');
-const nodemailer = require('nodemailer');
-const Mailgen = require('mailgen');
-const { EMAIL, PASSWORD } = process.env;
+const appRoute = require('./routes/route.js');
+const cors = require('cors'); // Import cors module
 
-// Initialize nodemailer transporter
-const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    auth: {
-        user: EMAIL,
-        pass: PASSWORD,
-    },
-    tls: {
-        rejectUnauthorized: false // Accept self-signed certificates
-    }
+// Enable CORS for all routes
+app.use(cors());
+
+// Define OPTIONS route for preflight requests
+app.options('/api/product/getbill', (req, res) => {
+    console.log('Received preflight request for /api/product/getbill');
+    res.set('Access-Control-Allow-Origin', '*'); // Set Access-Control-Allow-Origin header
+    res.status(200).end();
 });
 
-// Manually set CORS headers
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    next();
-});
+const PORT = process.env.PORT || 5000;
 
-// Handle user signup
-const signup = async (req, res) => {
-    try {
-        let message = {
-            from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>',
-            to: "bar@example.com, baz@example.com",
-            subject: "Hello ✔",
-            text: "Successfully Register with us.",
-            html: "<b>Successfully Register with us.</b>",
-        };
+app.use(express.json());
 
-        const info = await transporter.sendMail(message);
-        return res.status(201).json({
-            msg: "You should receive an email",
-            info: info.messageId,
-            preview: nodemailer.getTestMessageUrl(info)
-        });
-    } catch (error) {
-        console.error("Signup Error:", error);
-        return res.status(500).json({ error: error.message });
-    }
-};
-
-// Routes
-app.use('/api/user', router); // Mount the router under '/api/user'
-
-const PORT = process.env.PORT || 8000;
-
-app.get('/api/test', (req, res) => {
-    res.json({ message: 'Server is running!' });
-});
+/* routes */
+app.use('/api', appRoute);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
