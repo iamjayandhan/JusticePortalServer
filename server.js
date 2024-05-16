@@ -93,6 +93,11 @@ app.post('/api/product/getbill', getBill);
 
 const PORT = process.env.PORT || 8000;
 
+
+app.get('/api/test', (req, res) => {
+    res.json({ message: 'Server is running!' });
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
