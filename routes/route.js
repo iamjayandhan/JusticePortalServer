@@ -1,10 +1,10 @@
+// routes/route.js
+
 const router = require('express').Router();
+const { signup } = require('../controller/appController.js');
 
-const { signup,getBill } = require('../controller/appController.js')
-
-/* HTTP Request */
-router.post('/user/signup',signup)
-router.post('/product/getbill',getBill)
+// HTTP Request
+router.post('/signup', signup);
 
 // Additional test route
 router.get('/test', (req, res) => {
