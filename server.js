@@ -1,20 +1,11 @@
+// server.js
+
 const express = require('express');
 const app = express();
-const appRoute = require('./routes/route.js');
+const router = require('./routes/route.js');
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
-const cors = require('cors');
 const { EMAIL, PASSWORD } = process.env;
-
-// Enable CORS for all routes
-app.use(cors());
-
-// Define OPTIONS route for preflight requests
-app.options('/api/product/getbill', (req, res) => {
-    console.log('Received preflight request for /api/product/getbill');
-    res.set('Access-Control-Allow-Origin', '*');
-    res.status(200).end();
-});
 
 // Initialize nodemailer transporter
 const transporter = nodemailer.createTransport({
@@ -52,47 +43,10 @@ const signup = async (req, res) => {
     }
 };
 
-// Handle sending bills via email
-const getBill = (req, res) => {
-    const { userEmail, mailBody, subject } = req.body;
-
-    let MailGenerator = new Mailgen({
-        theme: "default",
-        product: {
-            name: "Justice Portal Team",
-            link: 'https://justice-portal.vercel.app/',
-        }
-    });
-
-    let response = {
-        body: mailBody,
-    };
-
-    let mail = MailGenerator.generate(response);
-
-    let message = {
-        from: EMAIL,
-        to: userEmail,
-        subject: subject || 'Registration Successful!',
-        html: mail
-    };
-
-    transporter.sendMail(message).then(() => {
-        return res.status(201).json({
-            msg: "You should receive an email"
-        });
-    }).catch(error => {
-        console.error("GetBill Error:", error);
-        return res.status(500).json({ error: error.message });
-    });
-};
-
 // Routes
-app.post('/api/user/signup', signup);
-app.post('/api/product/getbill', getBill);
+app.use('/api/user', router); // Mount the router under '/api/user'
 
 const PORT = process.env.PORT || 8000;
-
 
 app.get('/api/test', (req, res) => {
     res.json({ message: 'Server is running!' });
