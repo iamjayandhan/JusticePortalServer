@@ -6,6 +6,8 @@ const router = require('./routes/route.js');
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 const { EMAIL, PASSWORD } = process.env;
+const cors = require('cors'); // Import the cors middleware
+
 
 // Initialize nodemailer transporter
 const transporter = nodemailer.createTransport({
@@ -19,6 +21,9 @@ const transporter = nodemailer.createTransport({
         rejectUnauthorized: false // Accept self-signed certificates
     }
 });
+
+app.use(cors());
+
 
 // Enable CORS for all routes
 app.use((req, res, next) => {
