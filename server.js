@@ -1,13 +1,9 @@
-// server.js
-
 const express = require('express');
 const app = express();
 const router = require('./routes/route.js');
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 const { EMAIL, PASSWORD } = process.env;
-const cors = require('cors'); // Import the cors middleware
-
 
 // Initialize nodemailer transporter
 const transporter = nodemailer.createTransport({
@@ -22,16 +18,14 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-app.use(cors());
-
-
-// Enable CORS for all routes
+// Manually set CORS headers
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*"); // Allow requests from any origin
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Allow specified methods
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization"); // Allow specified headers
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
 });
+
 // Handle user signup
 const signup = async (req, res) => {
     try {
