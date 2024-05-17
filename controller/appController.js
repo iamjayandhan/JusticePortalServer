@@ -1,5 +1,3 @@
-// controller/appController.js
-
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 const { EMAIL, PASSWORD } = process.env;
