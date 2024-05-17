@@ -1,13 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const { signup } = require('../controller/appController.js');
+const router = require('express').Router();
 
-// POST request for signup
-router.post('/product/getbill', signup); // Ensure the path matches your request
+const { signup,getBill } = require('../controller/appController.js')
 
-// Additional test route
-router.get('/test', (req, res) => {
-    res.json({ message: 'Test route working!' });
-});
+/* HTTP Request */
+router.post('/user/signup',signup)
+router.post('/product/getbill',getBill)
 
 module.exports = router;
