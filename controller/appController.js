@@ -5,16 +5,12 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const signup = async (req, res) => {
     try {
-        /* TESTING ACCOUNT */
-        let testAccount = await nodemailer.createTestAccount();
-
         /* create reusable transporter object using the default SMTP transport */
         const transporter = nodemailer.createTransport({
-            host: "smtp.ethereal.email",
-            port: 587,
+            service: 'gmail',
             auth: {
-                user: "maddison53@ethereal.email",
-                pass: "jn7jnAPss4f63QBp6D",
+                user: EMAIL,
+                pass: PASSWORD,
             },
             tls: {
                 rejectUnauthorized: false // Accept self-signed certificates
@@ -42,17 +38,15 @@ const signup = async (req, res) => {
 };
 
 const getBill = (req, res) => {
-    const { userEmail, mailBody, subject } = req.body;
+    const { userEmail, mailBody, subject, userName } = req.body;
 
-    let config = {
+    let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: EMAIL,
             pass: PASSWORD
         }
-    };
-
-    let transporter = nodemailer.createTransport(config);
+    });
 
     let MailGenerator = new Mailgen({
         theme: "default",
@@ -65,10 +59,8 @@ const getBill = (req, res) => {
     let response = {
         body: mailBody,
     };
-    
 
-    // Check if userEmail is received
-    console.log('User Email:', userEmail);
+    // Generate email content
     let mail = MailGenerator.generate(response);
 
     let message = {
@@ -79,10 +71,8 @@ const getBill = (req, res) => {
     };
 
     transporter.sendMail(message).then(() => {
-
         // Set CORS headers in the response
         res.setHeader('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
-        // Optionally, you can set other CORS headers as needed
         res.setHeader('Access-Control-Allow-Methods', 'POST');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
