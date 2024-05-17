@@ -1,9 +1,8 @@
-// routes/route.js
-
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
 const { signup } = require('../controller/appController.js');
 
-// HTTP Request
+// POST request for signup
 router.post('/signup', signup);
 
 // Additional test route
