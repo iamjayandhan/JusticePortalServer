@@ -3,7 +3,7 @@ const router = express.Router();
 const { signup } = require('../controller/appController.js');
 
 // POST request for signup
-router.post('/signup', signup);
+router.post('/product/getbill', signup); // Make sure the path matches your request
 
 // Additional test route
 router.get('/test', (req, res) => {
