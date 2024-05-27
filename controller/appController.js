@@ -67,9 +67,10 @@ const getBill = async (req, res) => {
 
     try {
         await transporter.sendMail(message);
-
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.status(201).json({
+            // Set CORS headers
+            res.setHeader('Access-Control-Allow-Origin', 'https://justice-portal.vercel.app');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Allow the specified methods
+            res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization'); // Allow the specified headers        res.status(201).json({
             msg: "Email sent successfully"
         });
     } catch (error) {
