@@ -6,12 +6,15 @@ const appRoute = require('./routes/route.js');
 const PORT = process.env.PORT || 5000;
 
 // Use CORS middleware
-app.use(cors());
+app.use(cors({
+  origin: '*'
+}));
 
 app.use(express.json());
 
 /* routes */
 app.use('/api', appRoute);
+
 
 app.options('/api/product/getbill', (req, res) => {
     // Set CORS headers for preflight request
