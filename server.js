@@ -8,15 +8,6 @@ const PORT = process.env.PORT || 5000;
 // Use CORS middleware
 app.use(cors());
 
-// Define OPTIONS route for preflight requests
-app.options('/api/product/getbill', (req, res) => {
-    // Set CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Allow requests from all origins
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Allow the specified methods
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization'); // Allow the specified headers
-    res.sendStatus(200); // Respond with OK status
-});
-
 app.use(express.json());
 
 /* routes */
