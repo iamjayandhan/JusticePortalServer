@@ -15,7 +15,7 @@ app.use('/api', appRoute);
 
 app.options('/api/product/getbill', (req, res) => {
     // Set CORS headers for preflight request
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
+    res.setHeader('Access-Control-Allow-Origin', 'https://justice-portal.vercel.app'); // Allow requests only from the specified origin
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Allow the specified methods
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization'); // Allow the specified headers
     res.sendStatus(200); // Respond with OK status
